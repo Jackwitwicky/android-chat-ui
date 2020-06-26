@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
+import androidx.paging.PagedList;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -392,6 +393,10 @@ public class ChatView extends RelativeLayout {
 
     public void addMessages(ArrayList<ChatMessage> messages) {
         chatViewListAdapter.addMessages(messages);
+    }
+
+    public void submitPagedMessageList(PagedList<ChatMessage> messagePagedList) {
+        chatViewListAdapter.submitList(messagePagedList);
     }
 
     public void removeMessage(int position) {
