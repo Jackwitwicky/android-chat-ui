@@ -6,6 +6,8 @@ import android.os.Bundle;
 
 import com.jacknkiarie.chatui.models.ChatMessage;
 
+import java.util.UUID;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -14,8 +16,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ChatView chatView = (ChatView) findViewById(R.id.chat_view);
-        chatView.addMessage(new ChatMessage("Message received", System.currentTimeMillis(), ChatMessage.Type.RECEIVED));
-        chatView.addMessage(new ChatMessage("A message with a sender name",
+        chatView.addMessage(new ChatMessage(UUID.randomUUID().toString(), "Message received", System.currentTimeMillis(), ChatMessage.Type.RECEIVED));
+        chatView.addMessage(new ChatMessage(UUID.randomUUID().toString(), "A message with a sender name",
                 System.currentTimeMillis(), ChatMessage.Type.RECEIVED, "Ryan Java"));
         chatView.setOnSentMessageListener(new ChatView.OnSentMessageListener() {
             @Override

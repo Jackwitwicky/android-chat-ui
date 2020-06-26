@@ -33,6 +33,7 @@ import com.jacknkiarie.chatui.views.ViewBuilder;
 import com.jacknkiarie.chatui.views.ViewBuilderInterface;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 
 /**
@@ -379,7 +380,7 @@ public class ChatView extends RelativeLayout {
 
     private void sendMessage(String message, long stamp) {
 
-        ChatMessage chatMessage = new ChatMessage(message, stamp, ChatMessage.Type.SENT);
+        ChatMessage chatMessage = new ChatMessage(UUID.randomUUID().toString(), message, stamp, ChatMessage.Type.SENT);
         if (onSentMessageListener != null && onSentMessageListener.sendMessage(chatMessage)) {
             chatViewListAdapter.addMessage(chatMessage);
             chatListView.scrollToPosition(chatViewListAdapter.getItemCount() - 1);

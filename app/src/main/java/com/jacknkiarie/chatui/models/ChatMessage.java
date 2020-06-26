@@ -2,7 +2,9 @@ package com.jacknkiarie.chatui.models;
 
 import android.text.format.DateFormat;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
@@ -16,7 +18,9 @@ import java.util.concurrent.TimeUnit;
 @Entity(tableName = "chat_message_table")
 public class ChatMessage {
     @PrimaryKey
+    @NonNull
     public String id;
+
     public String message;
     public long timestamp;
 
@@ -25,14 +29,16 @@ public class ChatMessage {
 
     public String sender;
 
-    public ChatMessage(String message, long timestamp, Type type) {
+    @Ignore
+    public ChatMessage( @NonNull String id, String message, long timestamp, Type type) {
+        this.id = id;
         this.message = message;
         this.timestamp = timestamp;
         this.type = type;
     }
 
-    public ChatMessage(String message, long timestamp, Type type, String sender) {
-        this(message, timestamp, type);
+    public ChatMessage(String id, String message, long timestamp, Type type, String sender) {
+        this(id, message, timestamp, type);
         this.sender = sender;
     }
 
