@@ -45,7 +45,7 @@ public class ChatView extends RelativeLayout {
     private static final int ELEVATED = 1;
 
     private CardView inputFrame;
-    private RecyclerView chatListView;
+    public RecyclerView chatListView;
     private EditText inputEditText;
 
     private ViewBuilderInterface viewBuilder;
@@ -62,7 +62,7 @@ public class ChatView extends RelativeLayout {
         }
     };
     private OnSentMessageListener onSentMessageListener;
-    private ChatViewListAdapter chatViewListAdapter;
+    public ChatViewListAdapter chatViewListAdapter;
 
     private String inputHint;
     private int inputFrameBackgroundColor, backgroundColor;
