@@ -22,6 +22,8 @@ import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.jacknkiarie.chatui.adapters.ChatViewListAdapter;
 import com.jacknkiarie.chatui.fab.FloatingActionsMenu;
@@ -41,7 +43,7 @@ public class ChatView extends RelativeLayout {
     private static final int ELEVATED = 1;
 
     private CardView inputFrame;
-    private ListView chatListView;
+    private RecyclerView chatListView;
     private EditText inputEditText;
 
     private ViewBuilderInterface viewBuilder;
@@ -106,7 +108,7 @@ public class ChatView extends RelativeLayout {
     }
 
     private void initializeViews() {
-        chatListView = (ListView) findViewById(R.id.chat_list);
+        chatListView = (RecyclerView) findViewById(R.id.chat_list);
         inputFrame = (CardView) findViewById(R.id.input_frame);
         inputEditText = (EditText) findViewById(R.id.input_edit_text);
         actionsMenu = (FloatingActionsMenu) findViewById(R.id.sendButton);
@@ -125,8 +127,12 @@ public class ChatView extends RelativeLayout {
     }
 
     private void setListAdapter() {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        layoutManager.setStackFromEnd(true);
         chatViewListAdapter = new ChatViewListAdapter(context, new ViewBuilder(), backgroundRcv, backgroundSend, bubbleBackgroundRcv,bubbleBackgroundSend,bubbleElevation);
         chatListView.setAdapter(chatViewListAdapter);
+        chatListView.setLayoutManager(layoutManager);
     }
 
     private void setViewAttributes() {
@@ -375,6 +381,7 @@ public class ChatView extends RelativeLayout {
         ChatMessage chatMessage = new ChatMessage(message, stamp, ChatMessage.Type.SENT);
         if (onSentMessageListener != null && onSentMessageListener.sendMessage(chatMessage)) {
             chatViewListAdapter.addMessage(chatMessage);
+            chatListView.scrollToPosition(chatViewListAdapter.getItemCount() - 1);
             inputEditText.setText("");
         }
     }

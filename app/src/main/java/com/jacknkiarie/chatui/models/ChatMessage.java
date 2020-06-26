@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
  * all messages that are to be shown in the chat-ui must be contained in this model.
  */
 public class ChatMessage {
+    private String id;
     private String message;
     private long timestamp;
     private Type type;
@@ -24,6 +25,14 @@ public class ChatMessage {
     public ChatMessage(String message, long timestamp, Type type, String sender) {
         this(message, timestamp, type);
         this.sender = sender;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public long getTimestamp() {

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chat_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -15,7 +15,6 @@
         android:divider="@android:color/transparent"
         android:paddingBottom="32dp"
         android:paddingTop="8dp"
-        android:stackFromBottom="true"
         android:transcriptMode="alwaysScroll" />
 
     <com.jacknkiarie.chatui.fab.FloatingActionsMenu
