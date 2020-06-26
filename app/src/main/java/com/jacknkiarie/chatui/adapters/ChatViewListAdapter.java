@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.paging.PagedListAdapter;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.jacknkiarie.chatui.models.ChatMessage;
@@ -17,13 +19,13 @@ import java.util.ArrayList;
 
 
 /**
- * List Adapter for use in the recycler view to display messages using the Message View Holder
+ * Paged List Adapter for use in the recycler view to display messages using the Message View Holder
  * <p>
  * Created by Timi
- * Extended by James Lendrem, Samuel Ojo
+ * Extended by James Lendrem, Samuel Ojo, Jack Kiarie
  */
 
-public class ChatViewListAdapter extends RecyclerView.Adapter<MessageViewHolder> {
+public class ChatViewListAdapter extends PagedListAdapter<ChatMessage, MessageViewHolder> {
 
 
     public final int STATUS_SENT = 0;
@@ -40,6 +42,7 @@ public class ChatViewListAdapter extends RecyclerView.Adapter<MessageViewHolder>
     LayoutInflater inflater;
 
     public ChatViewListAdapter(Context context, ViewBuilderInterface viewBuilder, int backgroundRcv, int backgroundSend, int bubbleBackgroundRcv, int bubbleBackgroundSend, float bubbleElevation) {
+        super(DIFF_CALLBACK);
         this.chatMessages = new ArrayList<>();
         this.context = context;
         this.inflater = LayoutInflater.from(context);
@@ -161,4 +164,23 @@ public class ChatViewListAdapter extends RecyclerView.Adapter<MessageViewHolder>
         this.chatMessages.clear();
         notifyDataSetChanged();
     }
+
+    private static DiffUtil.ItemCallback<ChatMessage> DIFF_CALLBACK =
+            new DiffUtil.ItemCallback<ChatMessage>() {
+                // Message details may have changed if reloaded from the database,
+                // but ID is fixed.
+                @Override
+                public boolean areItemsTheSame(ChatMessage oldMessage, ChatMessage newMessage) {
+                    return oldMessage.getId() == newMessage.getId();
+                }
+
+                @Override
+                public boolean areContentsTheSame(ChatMessage oldMessage,
+                                                  ChatMessage newMessage) {
+                    return (oldMessage.getSender().equals(newMessage.getSender()) &&
+                            oldMessage.getMessage().equals(newMessage.getMessage()) &&
+                            oldMessage.getTimestamp() == newMessage.getTimestamp());
+                }
+            };
+
 }
