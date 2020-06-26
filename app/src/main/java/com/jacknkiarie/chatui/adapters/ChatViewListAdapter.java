@@ -4,7 +4,9 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.jacknkiarie.chatui.models.ChatMessage;
 import com.jacknkiarie.chatui.viewholders.MessageViewHolder;
@@ -21,7 +23,8 @@ import java.util.ArrayList;
  * Extended by James Lendrem, Samuel Ojo
  */
 
-public class ChatViewListAdapter extends BaseAdapter {
+public class ChatViewListAdapter extends RecyclerView.Adapter<MessageViewHolder> {
+
 
     public final int STATUS_SENT = 0;
     public final int STATUS_RECEIVED = 1;
@@ -48,15 +51,15 @@ public class ChatViewListAdapter extends BaseAdapter {
         this.viewBuilder = viewBuilder;
     }
 
-    @Override
-    public int getCount() {
-        return chatMessages.size();
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return chatMessages.get(position);
-    }
+//    @Override
+//    public int getCount() {
+//        return chatMessages.size();
+//    }
+//
+//    @Override
+//    public Object getItem(int position) {
+//        return chatMessages.get(position);
+//    }
 
     @Override
     public long getItemId(int position) {
@@ -64,35 +67,28 @@ public class ChatViewListAdapter extends BaseAdapter {
     }
 
     @Override
-    public int getItemViewType(int position) {
-        return chatMessages.get(position).getType().ordinal();
+    public int getItemCount() {
+        return chatMessages.size();
     }
 
+    @NonNull
     @Override
-    public int getViewTypeCount() {
-        return 2;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        MessageViewHolder holder;
-        int type = getItemViewType(position);
-        if (convertView == null) {
-            switch (type) {
-                case STATUS_SENT:
-                    convertView = viewBuilder.buildSentView(context);
-                    break;
-                case STATUS_RECEIVED:
-                    convertView = viewBuilder.buildRecvView(context);
-                    break;
-            }
-
-            holder = new MessageViewHolder(convertView, backgroundRcv, backgroundSend, bubbleBackgroundRcv, bubbleBackgroundSend);
-            convertView.setTag(holder);
-        } else {
-            holder = (MessageViewHolder) convertView.getTag();
+    public MessageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        // create a new view
+        View convertView = viewBuilder.buildRecvView(context);
+        if (viewType == STATUS_SENT) {
+            convertView = viewBuilder.buildSentView(context);
         }
 
+        convertView.setLayoutParams(new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT));
+        MessageViewHolder messageViewHolder = new MessageViewHolder(convertView, backgroundRcv, backgroundSend, bubbleBackgroundRcv, bubbleBackgroundSend);
+
+        return messageViewHolder;
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
+        int type = getItemViewType(position);
         holder.setMessage(chatMessages.get(position).getMessage());
         holder.setTimestamp(chatMessages.get(position).getFormattedTime());
         holder.setElevation(bubbleElevation);
@@ -101,9 +97,49 @@ public class ChatViewListAdapter extends BaseAdapter {
         if (sender != null) {
             holder.setSender(sender);
         }
-
-        return convertView;
     }
+
+    @Override
+    public int getItemViewType(int position) {
+        return chatMessages.get(position).getType().ordinal();
+    }
+
+//    @Override
+//    public int getViewTypeCount() {
+//        return 2;
+//    }
+//
+//    @Override
+//    public View getView(int position, View convertView, ViewGroup parent) {
+//        MessageViewHolder holder;
+//        int type = getItemViewType(position);
+//        if (convertView == null) {
+//            switch (type) {
+//                case STATUS_SENT:
+//                    convertView = viewBuilder.buildSentView(context);
+//                    break;
+//                case STATUS_RECEIVED:
+//                    convertView = viewBuilder.buildRecvView(context);
+//                    break;
+//            }
+//
+//            holder = new MessageViewHolder(convertView, backgroundRcv, backgroundSend, bubbleBackgroundRcv, bubbleBackgroundSend);
+//            convertView.setTag(holder);
+//        } else {
+//            holder = (MessageViewHolder) convertView.getTag();
+//        }
+//
+//        holder.setMessage(chatMessages.get(position).getMessage());
+//        holder.setTimestamp(chatMessages.get(position).getFormattedTime());
+//        holder.setElevation(bubbleElevation);
+//        holder.setBackground(type);
+//        String sender = chatMessages.get(position).getSender();
+//        if (sender != null) {
+//            holder.setSender(sender);
+//        }
+//
+//        return convertView;
+//    }
 
     public void addMessage(ChatMessage message) {
         chatMessages.add(message);

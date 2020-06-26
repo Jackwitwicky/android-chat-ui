@@ -3,7 +3,9 @@ package com.jacknkiarie.chatui.viewholders;
 import android.content.Context;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.jacknkiarie.chatui.R;
 import com.jacknkiarie.chatui.views.MessageView;
@@ -17,7 +19,7 @@ import com.jacknkiarie.chatui.views.MessageView;
  * Extended by James Lendrem, Michael Obi, Samuel Ojo
  */
 
-public class MessageViewHolder {
+public class MessageViewHolder extends RecyclerView.ViewHolder {
 
     public final int STATUS_SENT = 0;
     public final int STATUS_RECEIVED = 1;
@@ -25,11 +27,16 @@ public class MessageViewHolder {
     View row;
     Context context;
 
-    private MessageView messageView;
+    public MessageView messageView;
     private int backgroundRcv, backgroundSend;
     private int bubbleBackgroundRcv, bubbleBackgroundSend;
 
+//    public MessageViewHolder(@NonNull View itemView) {
+//        super(itemView);
+//    }
+
     public MessageViewHolder(View convertView, int backgroundRcv, int backgroundSend, int bubbleBackgroundRcv, int bubbleBackgroundSend) {
+        super(convertView);
         row = convertView;
         context = row.getContext();
         messageView = (MessageView) convertView;
