@@ -64,15 +64,15 @@ public class ChatViewListAdapter extends PagedListAdapter<ChatMessage, MessageVi
 //        return chatMessages.get(position);
 //    }
 
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public int getItemCount() {
-        return chatMessages.size();
-    }
+//    @Override
+//    public long getItemId(int position) {
+//        return position;
+//    }
+//
+//    @Override
+//    public int getItemCount() {
+//        return chatMessages.size();
+//    }
 
     @NonNull
     @Override
@@ -92,11 +92,11 @@ public class ChatViewListAdapter extends PagedListAdapter<ChatMessage, MessageVi
     @Override
     public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
         int type = getItemViewType(position);
-        holder.setMessage(chatMessages.get(position).getMessage());
-        holder.setTimestamp(chatMessages.get(position).getFormattedTime());
+        holder.setMessage(getItem(position).getMessage());
+        holder.setTimestamp(getItem(position).getFormattedTime());
         holder.setElevation(bubbleElevation);
         holder.setBackground(type);
-        String sender = chatMessages.get(position).getSender();
+        String sender = getItem(position).getSender();
         if (sender != null) {
             holder.setSender(sender);
         }
@@ -104,7 +104,7 @@ public class ChatViewListAdapter extends PagedListAdapter<ChatMessage, MessageVi
 
     @Override
     public int getItemViewType(int position) {
-        return chatMessages.get(position).getType().ordinal();
+        return getItem(position).getType().ordinal();
     }
 
 //    @Override
@@ -171,7 +171,7 @@ public class ChatViewListAdapter extends PagedListAdapter<ChatMessage, MessageVi
                 // but ID is fixed.
                 @Override
                 public boolean areItemsTheSame(ChatMessage oldMessage, ChatMessage newMessage) {
-                    return oldMessage.getId() == newMessage.getId();
+                    return oldMessage.getId().equals(newMessage.getId());
                 }
 
                 @Override
