@@ -1,5 +1,6 @@
 package com.jacknkiarie.chatui.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,26 +55,6 @@ public class ChatViewListAdapter extends PagedListAdapter<ChatMessage, MessageVi
         this.viewBuilder = viewBuilder;
     }
 
-//    @Override
-//    public int getCount() {
-//        return chatMessages.size();
-//    }
-//
-//    @Override
-//    public Object getItem(int position) {
-//        return chatMessages.get(position);
-//    }
-
-//    @Override
-//    public long getItemId(int position) {
-//        return position;
-//    }
-//
-//    @Override
-//    public int getItemCount() {
-//        return chatMessages.size();
-//    }
-
     @NonNull
     @Override
     public MessageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -107,43 +88,6 @@ public class ChatViewListAdapter extends PagedListAdapter<ChatMessage, MessageVi
         return getItem(position).getType().ordinal();
     }
 
-//    @Override
-//    public int getViewTypeCount() {
-//        return 2;
-//    }
-//
-//    @Override
-//    public View getView(int position, View convertView, ViewGroup parent) {
-//        MessageViewHolder holder;
-//        int type = getItemViewType(position);
-//        if (convertView == null) {
-//            switch (type) {
-//                case STATUS_SENT:
-//                    convertView = viewBuilder.buildSentView(context);
-//                    break;
-//                case STATUS_RECEIVED:
-//                    convertView = viewBuilder.buildRecvView(context);
-//                    break;
-//            }
-//
-//            holder = new MessageViewHolder(convertView, backgroundRcv, backgroundSend, bubbleBackgroundRcv, bubbleBackgroundSend);
-//            convertView.setTag(holder);
-//        } else {
-//            holder = (MessageViewHolder) convertView.getTag();
-//        }
-//
-//        holder.setMessage(chatMessages.get(position).getMessage());
-//        holder.setTimestamp(chatMessages.get(position).getFormattedTime());
-//        holder.setElevation(bubbleElevation);
-//        holder.setBackground(type);
-//        String sender = chatMessages.get(position).getSender();
-//        if (sender != null) {
-//            holder.setSender(sender);
-//        }
-//
-//        return convertView;
-//    }
-
     public void addMessage(ChatMessage message) {
         chatMessages.add(message);
         notifyDataSetChanged();
@@ -171,14 +115,14 @@ public class ChatViewListAdapter extends PagedListAdapter<ChatMessage, MessageVi
                 // but ID is fixed.
                 @Override
                 public boolean areItemsTheSame(ChatMessage oldMessage, ChatMessage newMessage) {
-                    return oldMessage.getId().equals(newMessage.getId());
+                    return oldMessage.getId() == newMessage.getId();
                 }
 
+                @SuppressLint("DiffUtilEquals")
                 @Override
                 public boolean areContentsTheSame(ChatMessage oldMessage,
                                                   ChatMessage newMessage) {
-                    return (oldMessage.getSender().equals(newMessage.getSender()) &&
-                            oldMessage.getMessage().equals(newMessage.getMessage()) &&
+                    return (oldMessage.getMessage() == newMessage.getMessage() &&
                             oldMessage.getTimestamp() == newMessage.getTimestamp());
                 }
             };

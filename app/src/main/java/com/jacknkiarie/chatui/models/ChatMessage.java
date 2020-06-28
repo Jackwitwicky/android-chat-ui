@@ -21,13 +21,18 @@ public class ChatMessage {
     @NonNull
     public String id;
 
+    @NonNull
+    public String chatId;
+
     public String message;
     public long timestamp;
-
-    @TypeConverters(MessageTypeConverter.class)
     public Type type;
-
     public String sender;
+    public int fromUserId;
+    public int toUserId;
+    public String flag;
+    public boolean messageRead;
+
 
     @Ignore
     public ChatMessage( @NonNull String id, String message, long timestamp, Type type) {
@@ -37,9 +42,20 @@ public class ChatMessage {
         this.type = type;
     }
 
+    @Ignore
     public ChatMessage(String id, String message, long timestamp, Type type, String sender) {
         this(id, message, timestamp, type);
         this.sender = sender;
+    }
+
+    public ChatMessage(String id, String message, long timestamp, Type type, String sender,
+                       int fromUserId, int toUserId, String chatId, String flag, boolean messageRead) {
+        this(id, message, timestamp, type, sender);
+        this.fromUserId = fromUserId;
+        this.toUserId = toUserId;
+        this.chatId = chatId;
+        this.flag = flag;
+        this.messageRead = messageRead;
     }
 
     public String getId() {
@@ -92,6 +108,47 @@ public class ChatMessage {
 
     public void setSender(String sender) {
         this.sender = sender;
+    }
+
+    @NonNull
+    public String getChatId() {
+        return chatId;
+    }
+
+    public void setChatId(@NonNull String chatId) {
+        this.chatId = chatId;
+    }
+
+    public int getFromUserId() {
+        return fromUserId;
+    }
+
+    public void setFromUserId(int fromUserId) {
+        this.fromUserId = fromUserId;
+    }
+
+    public int getToUserId() {
+        return toUserId;
+    }
+
+    public void setToUserId(int toUserId) {
+        this.toUserId = toUserId;
+    }
+
+    public String getFlag() {
+        return flag;
+    }
+
+    public void setFlag(String flag) {
+        this.flag = flag;
+    }
+
+    public boolean isMessageRead() {
+        return messageRead;
+    }
+
+    public void setMessageRead(boolean messageRead) {
+        this.messageRead = messageRead;
     }
 
     public enum Type {
