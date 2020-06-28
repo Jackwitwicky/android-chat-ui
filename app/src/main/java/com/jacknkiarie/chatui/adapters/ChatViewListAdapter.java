@@ -73,19 +73,28 @@ public class ChatViewListAdapter extends PagedListAdapter<ChatMessage, MessageVi
     @Override
     public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
         int type = getItemViewType(position);
-        holder.setMessage(getItem(position).getMessage());
-        holder.setTimestamp(getItem(position).getFormattedTime());
-        holder.setElevation(bubbleElevation);
-        holder.setBackground(type);
-        String sender = getItem(position).getSender();
-        if (sender != null) {
-            holder.setSender(sender);
+        ChatMessage chatMessage = getItem(position);
+        if (chatMessage != null) {
+            holder.setMessage(getItem(position).getMessage());
+            holder.setTimestamp(getItem(position).getFormattedTime());
+            holder.setElevation(bubbleElevation);
+            holder.setBackground(type);
+            String sender = getItem(position).getSender();
+            if (sender != null) {
+                holder.setSender(sender);
+            }
         }
     }
 
     @Override
     public int getItemViewType(int position) {
-        return getItem(position).getType().ordinal();
+        ChatMessage currentMessage = getItem(position);
+        if (currentMessage != null) {
+            return currentMessage.getType().ordinal();
+        }
+
+        // else default to sent message
+        return ChatMessage.Type.SENT.getCode();
     }
 
     public void addMessage(ChatMessage message) {
